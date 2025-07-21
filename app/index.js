@@ -30,7 +30,7 @@ export default function Index() {
         }}
         accessibilityLabel="Learn more about this purple button"
       >
-        <Text style={{ color: "white", fontWeight: "bold" }}>Click</Text>
+        <Text style={{ color: "white", fontWeight: "bold" }}>Click me</Text>
       </TouchableOpacity>
 
       <Text style={{ marginTop: 20, fontSize: 20 }}>{cash}</Text>

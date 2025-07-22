@@ -10,7 +10,8 @@ export default function Index() {
   const [btc, setBTC] = useState(0);
   const [bitcoinPrice, setBitcoinPrice] = useState(87414.5);
   const [openTab, setOpenTab] = useState("");
-
+  const [googleValue, setGoogleValue] = useState(191)
+  const [googleHeld, setGoogleHeld] = useState(0)
   useEffect(() => {
     const interval = setInterval(() => {
       const change = (Math.random() - 0.5) * 2;
@@ -55,7 +56,9 @@ export default function Index() {
               textAlign: 'center',
               paddingVertical: 10,
               borderRadius: 5
-            }}>£{cash}</Text>
+            }}>
+              £{Math.floor(cash * 100) / 100}
+            </Text>
 
             {/* Crypto Button */}
             <Pressable onPress={() => toggleTab("crypto")}>
@@ -92,7 +95,7 @@ export default function Index() {
               }}>Stocks</Text>
             </Pressable>
 
-       {openTab === "commodities" && <Stocks />}
+       {openTab === "commodities" && <Stocks googleHeld={googleHeld} setGoogleHeld={setGoogleHeld} googleValue={googleValue} setGoogleValue={setGoogleValue} cash={cash} setCash={setCash} />}
   
 
 
@@ -110,7 +113,7 @@ export default function Index() {
               }}>Holdings</Text>
             </Pressable>
 
-            {openTab === "holdings" && <Holdings />}
+            {openTab === "holdings" && <Holdings  googleHeld={googleHeld} setGoogleHeld={setGoogleHeld} />}
 
             {/* Upgrades Button */}
             <Pressable onPress={() => toggleTab("upgrades")}>

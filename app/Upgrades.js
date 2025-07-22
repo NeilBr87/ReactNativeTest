@@ -37,16 +37,16 @@ export default function Upgrades() {
       {/* Buy Buttons */}
       <View style={{ alignItems: 'center', marginHorizontal: 10 }}>
         <Pressable onPress={() => console.log('Buy Google')}>
-          <Text style={{ width: 50, height: 50, marginBottom: 10, backgroundColor: '#497147ff', color: 'white', textAlign: 'center', lineHeight: 50, borderRadius: 5}}>Buy</Text>
+          <Text style={{ width: 50, height: 50, marginBottom: 10, backgroundColor: '#497147ff', color: 'white', textAlign: 'center', lineHeight: 50, borderRadius: 5}}>£1K</Text>
         </Pressable>
         <Pressable onPress={() => console.log('Buy Tesla')}>
-          <Text style={{ width: 50, height: 50, marginBottom: 10, backgroundColor: '#497147ff', color: 'white', textAlign: 'center', lineHeight: 50, borderRadius: 5}}>Buy</Text>
+          <Text style={{ width: 50, height: 50, marginBottom: 10, backgroundColor: '#497147ff', color: 'white', textAlign: 'center', lineHeight: 50, borderRadius: 5}}>£5K</Text>
         </Pressable>
         <Pressable onPress={() => console.log('Buy Netflix')}>
-          <Text style={{ width: 50, height: 50, marginBottom: 10, backgroundColor: '#497147ff', color: 'white', textAlign: 'center', lineHeight: 50, borderRadius: 5}}>Buy</Text>
+          <Text style={{ width: 50, height: 50, marginBottom: 10, backgroundColor: '#497147ff', color: 'white', textAlign: 'center', lineHeight: 50, borderRadius: 5}}>£10K</Text>
         </Pressable>
         <Pressable onPress={() => console.log('Buy Apple')}>
-          <Text style={{ width: 50, height: 50, marginBottom: 10, backgroundColor: '#497147ff', color: 'white', textAlign: 'center', lineHeight: 50, borderRadius: 5}}>Buy</Text>
+          <Text style={{ width: 50, height: 50, marginBottom: 10, backgroundColor: '#497147ff', color: 'white', textAlign: 'center', lineHeight: 50, borderRadius: 5}}>£20K</Text>
         </Pressable>
       </View>
        </View>

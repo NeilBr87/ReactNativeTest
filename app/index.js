@@ -1,267 +1,136 @@
 import { useEffect, useState } from 'react';
-import { Text, View } from "react-native";
-
+import { Pressable, ScrollView, Text, View } from "react-native";
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import Holdings from './Holdings';
+import Mining from './Mining';
+import Stocks from './Stocks';
+import Upgrades from './Upgrades';
 export default function Index() {
   const [cash, setCash] = useState(0);
   const [btc, setBTC] = useState(0);
-  const [bitcoinPrice, setBitcoinPrice] = useState(87414.5)
-  const [bitcoinValue, setBitcoinValue] = useState(0)
-  const [openTab, setOpenTab] = useState("")
+  const [bitcoinPrice, setBitcoinPrice] = useState(87414.5);
+  const [openTab, setOpenTab] = useState("");
 
-
-  
   useEffect(() => {
     const interval = setInterval(() => {
-      // Random number between -0.5 and 0.5
       const change = (Math.random() - 0.5) * 2;
-      setBitcoinPrice(prevPrice => parseFloat((prevPrice + change).toFixed(2)));
-    }, 2000); // every 2 seconds
+      setBitcoinPrice(prev => parseFloat((prev + change).toFixed(2)));
+    }, 2000);
 
-    return () => clearInterval(interval); // Clean up on unmount
+    return () => clearInterval(interval);
   }, []);
 
-function sellBTC() {
-  const newBitcoinValue = btc * bitcoinPrice;
-  setBitcoinValue(newBitcoinValue);
+  // const sellBTC = () => {
+  //   const btcValue = btc * bitcoinPrice;
+  //   setCash(parseFloat((cash + btcValue).toFixed(2)));
+  //   setBTC(0);
+  // };
 
-  const updatedCash = parseFloat((cash + newBitcoinValue).toFixed(2));
-  setCash(updatedCash);
+  // const earnBTC = () => {
+  //   setBTC(prev => prev + 0.000011);
+  // };
 
-  setBTC(0);
-}
-
-
-  function earnBTC() {
-    setBTC(btc + 0.000011);
-  }
-
-  function openCrypto() {
-    if (openTab === "crypto") {
-      setOpenTab("")
-    }
-    else {
-    setOpenTab("crypto")
-    }
-  }
-
-  function openCommodities() {
-    if (openTab === "commodities") {
-      setOpenTab("")
-    }
-    else {
-    setOpenTab("commodities")
-    }
-  }
-
-  function openUpgrades() {
-    setOpenTab("upgrades")
-  }
+  const toggleTab = (tabName) => {
+    setOpenTab(prev => (prev === tabName ? "" : tabName));
+  };
 
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "#F3EFEF"
-      }}
-    >
-      <Text style={{
-        color: "black",
-        fontWeight: "bold",
-        fontSize: 40,
-        marginBottom: 20
-      }}>Trading Day</Text>
+    <SafeAreaProvider>
+      <SafeAreaView style={{ flex: 1 }}>
+        <ScrollView style={{ backgroundColor: '#F3EFEF' }}>
+          <View style={{ alignItems: "center", padding: 20 }}>
+            <Text style={{
+              color: "black",
+              fontWeight: "bold",
+              fontSize: 40,
+              marginBottom: 20
+            }}>Trading Day</Text>
 
-      <Text>Current funds</Text>
-      <Text style={{fontSize: 24, fontWeight: "bold", backgroundColor: "white", width: 100, textAlign: 'center', paddingTop: 10, paddingBottom: 10, borderRadius: 5}}>£{cash}</Text>
+            <Text>Current funds</Text>
+            <Text style={{
+              fontSize: 24,
+              fontWeight: "bold",
+              backgroundColor: "white",
+              width: 100,
+              textAlign: 'center',
+              paddingVertical: 10,
+              borderRadius: 5
+            }}>£{cash}</Text>
 
-      <Text onPress={openCrypto}
-        style={{ 
-        marginTop: 20, 
-        fontSize: 24, 
-        fontWeight: "bold", 
-        backgroundColor: "#004777", 
-        color: 'white',
-        width: 300, 
-        textAlign: 'center', 
-        paddingTop: 20, 
-        paddingBottom: 20, 
-        borderRadius: 5}}
-        >Crypto Mining</Text>
+            {/* Crypto Button */}
+            <Pressable onPress={() => toggleTab("crypto")}>
+              <Text style={{
+                marginTop: 20,
+                fontSize: 24,
+                fontWeight: "bold",
+                backgroundColor: "#004777",
+                color: 'white',
+                width: 300,
+                textAlign: 'center',
+                paddingVertical: 20,
+                borderRadius: 5
+              }}>Crypto Mining</Text>
+            </Pressable>
 
-      
-        {openTab === "crypto" && (
-  <View>
-    <Text style={{
-      fontSize: 20,
-      marginTop: 10,
-      fontWeight: 'bold',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      textAlign: 'center',
-      marginBottom: 20
-    }}>
-      Mine Bitcoin
-    </Text>
+            {/* Crypto Tab */}
+            {openTab === "crypto" && (
+              <Mining btc={btc} setBTC={setBTC} bitcoinPrice={bitcoinPrice} setBitcoinPrice={setBitcoinPrice} cash={cash} setCash={setCash} />
+            )}
 
-    <View style={{ alignItems: 'center' }}>
-  <Text
-    onPress={earnBTC}
-    style={{ 
-      fontSize: 14, 
-      fontWeight: "bold", 
-      backgroundColor: "#497147ff",
-      color:'white',
-      width: 100, 
-      textAlign: 'center', 
-      paddingTop: 20, 
-      paddingBottom: 20, 
-      borderRadius: 5
-    }}
-  >
-    Mine
-  </Text>
-</View>
+            {/* Stocks Button */}
+            <Pressable onPress={() => toggleTab("commodities")}>
+              <Text style={{
+                marginTop: 20,
+                fontSize: 24,
+                fontWeight: "bold",
+                backgroundColor: "#004777",
+                color: "white",
+                width: 300,
+                textAlign: 'center',
+                paddingVertical: 20,
+                borderRadius: 5
+              }}>Stocks</Text>
+            </Pressable>
 
-        <Text style={{textAlign: 'center', fontWeight: 'bold', marginTop: 10}}>Current Bitcoin holdings</Text>
-        
-        <View style={{ alignItems: 'center' }}>
-  <Text
-    style={{ 
-      marginTop: 10,
-      fontSize: 12, 
-      fontWeight: "bold", 
-      backgroundColor: "white",
-      width: 80, 
-      textAlign: 'center', 
-      paddingTop: 12, 
-      paddingBottom: 12, 
-      borderRadius: 5
-    }}
-  >
-    {btc} BTC
-  </Text>
+       {openTab === "commodities" && <Stocks />}
   
-</View>
-
-        <Text style={{textAlign: 'center', fontWeight: 'bold', marginTop: 10}}>Current Bitcoin price</Text>
-
-       <View style={{ alignItems: 'center' }}> 
-  <Text
-    style={{ 
-      marginTop: 10,
-      fontSize: 12, 
-      fontWeight: "bold", 
-      backgroundColor: "white",
-      width: 80, 
-      textAlign: 'center', 
-      paddingTop: 12, 
-      paddingBottom: 12, 
-      borderRadius: 5
-    }}
-  >
-    £{bitcoinPrice}
-  </Text>
-  
-</View>
-    <View style={{ alignItems: 'center' }}>
-  <Text
-    onPress={sellBTC}
-    style={{ 
-      marginTop: 20,
-      fontSize: 14, 
-      fontWeight: "bold", 
-      backgroundColor: "#DB3A34",
-      color:'white',
-      width: 100, 
-      textAlign: 'center', 
-      paddingTop: 20, 
-      paddingBottom: 20, 
-      borderRadius: 5
-    }}
-  >
-    Sell BTC
-  </Text>
-</View>
-
-      </View>
 
 
+        <Pressable onPress={() => toggleTab("holdings")}>
+              <Text style={{
+                marginTop: 20,
+                fontSize: 24,
+                fontWeight: "bold",
+                backgroundColor: "#004777",
+                color: 'white',
+                width: 300,
+                textAlign: 'center',
+                paddingVertical: 20,
+                borderRadius: 5
+              }}>Holdings</Text>
+            </Pressable>
 
-)}
+            {openTab === "holdings" && <Holdings />}
 
-    
-      <Text onPress={openCommodities}
-        style={{ 
-        marginTop: 20, 
-        fontSize: 24, 
-        fontWeight: "bold", 
-        backgroundColor: "#004777",
-        color: "white", 
-        width: 300, 
-        textAlign: 'center', 
-        paddingTop: 20, 
-        paddingBottom: 20, 
-        borderRadius: 5}}
-        >Stocks</Text>
+            {/* Upgrades Button */}
+            <Pressable onPress={() => toggleTab("upgrades")}>
+              <Text style={{
+                marginTop: 20,
+                fontSize: 24,
+                fontWeight: "bold",
+                backgroundColor: "#004777",
+                color: 'white',
+                width: 300,
+                textAlign: 'center',
+                paddingVertical: 20,
+                borderRadius: 5
+              }}>Upgrades</Text>
+            </Pressable>
 
-        {openTab === "commodities" && (
-  <View>
-    <Text style={{
-      fontSize: 20,
-      color: 'white',
-      fontWeight: 'bold',
-      textAlign: 'center',
-      marginBottom: 20
-    }}>
-      Commodities exchange
-    </Text>
-
-    {/* Centered row of labeled items */}
-    <View style={{
-      flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems: 'center'
-    }}>
-      <View style={{ alignItems: 'center', marginHorizontal: 15 }}>
-        <Text style={{ color: 'white', marginBottom: 4 }}>Commodity</Text>
-        <Text style={{ color: 'white' }}>Gold</Text>
-        <Text style={{ color: 'white' }}>Silver</Text>
-        <Text style={{ color: 'white' }}>Leather</Text>
-        <Text style={{ color: 'white' }}>Hops</Text>
-        <Text style={{ color: 'white' }}>Wheat</Text>
-      </View>
-
-      {/* Silver */}
-      <View style={{ alignItems: 'center', marginHorizontal: 15 }}>
-        <Text style={{ color: 'gray', marginBottom: 4 }}>Label</Text>
-        <Text style={{ color: 'white' }}>Silver</Text>
-      </View>
-
-      {/* Oil */}
-      <View style={{ alignItems: 'center', marginHorizontal: 15 }}>
-        <Text style={{ color: 'gray', marginBottom: 4 }}>Label</Text>
-        <Text style={{ color: 'white' }}>Oil</Text>
-      </View>
-    </View>
-  </View>
-)}
-
-
-        <Text  onPress={openUpgrades} style={{ 
-        marginTop: 20, 
-        fontSize: 24, 
-        fontWeight: "bold", 
-        backgroundColor: "#004777", 
-        color: 'white',
-        width: 300, 
-        textAlign: 'center', 
-        paddingTop: 20, 
-        paddingBottom: 20, 
-        borderRadius: 5}}>Upgrades</Text>
-
-    </View>
+            {openTab === "upgrades" && <Upgrades />}
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }

@@ -21,6 +21,19 @@ export default function Index() {
   const [amazonValue, setAmazonValue] = useState(60)
   const [amazonHeld, setAmazonHeld] = useState(0)
 
+useEffect(() => {
+  const interval = setInterval(() => {
+    const getChange = () => Math.floor((Math.random() - 0.5) * 11); // roughly -5 to +5
+
+    setGoogleValue(prev => Math.max(0, prev + getChange()));
+    setTeslaValue(prev => Math.max(0, prev + getChange()));
+    setBhValue(prev => Math.max(0, prev + getChange()));
+    setAppleValue(prev => Math.max(0, prev + getChange()));
+    setAmazonValue(prev => Math.max(0, prev + getChange()));
+  }, 3000);
+
+  return () => clearInterval(interval);
+}, []);
 
   useEffect(() => {
     const interval = setInterval(() => {

@@ -1,118 +1,103 @@
 import React, { useState } from 'react';
-import { Pressable, Text, View } from "react-native";
+import { Pressable, Text, View } from 'react-native';
 
 export default function BuySubTab(props) {
   const [buyAmt, setBuyAmt] = useState(0);
 
-  const totalCost = (buyAmt * props.googleValue).toFixed(2);
-  const maxBuyable = Math.floor(props.cash / props.googleValue); // max whole shares
+  const isBuying = props.mode === 'buy';
+  const maxAffordable = isBuying
+    ? Math.floor(props.cash / props.value)
+    : props.held;
 
-  function changeBuyAmt(action) {
-    setBuyAmt(prev => {
-      if (action === "zero") return 0;
-      if (action === "plusone") {
-        const newAmt = prev + 1;
-        return newAmt <= maxBuyable ? newAmt : maxBuyable;
-      }
-      if (action === "plusten") {
-        const newAmt = prev + 10;
-        return newAmt <= maxBuyable ? newAmt : maxBuyable;
-      }
-      if (action === "max") {
-        return maxBuyable;
-      }
-      return prev;
+  const confirmTransaction = () => {
+    const total = buyAmt * props.value;
+
+    if (buyAmt === 0) return;
+
+    if (isBuying) {
+      if (total > props.cash) return;
+      props.setHeld(props.held + buyAmt);
+      props.setCash(props.cash - total);
+    } else {
+      if (buyAmt > props.held) return;
+      props.setHeld(props.held - buyAmt);
+      props.setCash(props.cash + total);
+    }
+
+    setBuyAmt(0);
+  };
+
+  const addAmount = (amt) => {
+    setBuyAmt((prev) => {
+      const newAmt = prev + amt;
+      return newAmt > maxAffordable ? maxAffordable : newAmt;
     });
-  }
-
-  function confirmBuy() {
-    const totalCostNum = buyAmt * props.googleValue;
-
-    // Prevent overspending or empty purchase
-    if (buyAmt === 0 || totalCostNum > props.cash) return;
-
-    props.setGoogleHeld(props.googleHeld + buyAmt);
-    props.setCash(props.cash - totalCostNum);
-    setBuyAmt(0); // Reset after purchase
-  }
+  };
 
   return (
-    <View style={{ marginTop: 10 }}>
-      {/* Shares and Cost */}
-      <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-        <View style={{ alignItems: 'center', marginHorizontal: 5 }}>
-          <Text style={{ fontSize: 12, fontWeight: 'bold', marginBottom: 6 }}>Shares to Buy</Text>
-          <Text style={displayBox}>{buyAmt}</Text>
-        </View>
+    <View style={{ alignItems: 'center', marginBottom: 20 }}>
+      <Text style={{ fontSize: 12, fontWeight: 'bold', marginBottom: 6 }}>
+        {isBuying ? 'Shares to Buy' : 'Shares to Sell'}
+      </Text>
 
-        <View style={{ alignItems: 'center', marginHorizontal: 5 }}>
-          <Text style={{ fontSize: 12, fontWeight: 'bold', marginBottom: 6 }}>Total Cost</Text>
-          <Text style={displayBox}>£{totalCost}</Text>
-        </View>
+      <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+        {[
+          { label: '0', value: 0 },
+          { label: '+1', value: 1 },
+          { label: '+10', value: 10 },
+          { label: '+100', value: 100 },
+          { label: 'MAX', value: maxAffordable - buyAmt }
+        ].map((btn, i) => (
+          <Pressable
+            key={i}
+            onPress={() => {
+              if (btn.label === '0') setBuyAmt(0);
+              else if (btn.label === 'MAX') setBuyAmt(maxAffordable);
+              else addAmount(btn.value);
+            }}
+            style={{
+              backgroundColor: '#ccc',
+              padding: 6,
+              marginHorizontal: 4,
+              borderRadius: 4,
+              minWidth: 45,
+              alignItems: 'center',
+            }}
+          >
+            <Text>{btn.label}</Text>
+          </Pressable>
+        ))}
       </View>
 
-    
-      {props.cash < props.googleValue && <View>
-        <Text style={{textAlign: 'center', marginTop: 10, marginBottom: 10, fontWeight: 'bold', color: 'red'}}>Mine more cryto to buy this!</Text>
-      </View>}
+      <Text style={{ fontSize: 12, fontWeight: 'bold', marginBottom: 6 }}>
+        {isBuying ? 'Total Cost' : 'Total Value'}: £{(buyAmt * props.value).toFixed(2)}
+      </Text>
 
-      {/* Buy Buttons */}
-      <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 10 }}>
-        <Pressable onPress={() => changeBuyAmt("zero")}>
-          <Text style={buttonStyle}>Clear</Text>
-        </Pressable>
-        <Pressable onPress={() => changeBuyAmt("plusone")}>
-          <Text style={buttonStyle}>+1</Text>
-        </Pressable>
-        <Pressable onPress={() => changeBuyAmt("plusten")}>
-          <Text style={buttonStyle}>+10</Text>
-        </Pressable>
-        <Pressable onPress={() => changeBuyAmt("max")}>
-          <Text style={buttonStyle}>Max</Text>
-        </Pressable>
-      </View>
+      {isBuying && props.cash < props.value && (
+        <Text style={{ color: 'red', fontWeight: 'bold', marginBottom: 10 }}>
+          Mine more crypto to buy this!
+        </Text>
+      )}
 
-      {/* Confirm Button */}
-      <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 10 }}>
-        <Pressable onPress={confirmBuy} style={{ flex: 1 }}>
-          <Text style={confirmButton}>Confirm</Text>
-        </Pressable>
-      </View>
+      {!isBuying && props.held === 0 && (
+        <Text style={{ color: 'red', fontWeight: 'bold', marginBottom: 10 }}>
+          You don’t have any to sell!
+        </Text>
+      )}
+
+      <Pressable onPress={confirmTransaction}>
+        <Text style={{
+          backgroundColor: isBuying ? '#497147ff' : '#DB3A34',
+          color: 'white',
+          padding: 10,
+          borderRadius: 5,
+          textAlign: 'center',
+          fontWeight: 'bold',
+          minWidth: 120
+        }}>
+          Confirm {isBuying ? 'Buy' : 'Sell'}
+        </Text>
+      </Pressable>
     </View>
   );
 }
-
-const displayBox = {
-  backgroundColor: 'white',
-  width: 140,
-  textAlign: 'center',
-  paddingVertical: 6,
-  borderRadius: 10,
-  borderWidth: 1,
-  borderColor: 'black'
-};
-
-const buttonStyle = {
-  width: 60,
-  height: 50,
-  marginHorizontal: 5,
-  backgroundColor: '#497147ff',
-  color: 'white',
-  textAlign: 'center',
-  lineHeight: 50,
-  borderRadius: 5,
-  fontWeight: 'bold'
-};
-
-const confirmButton = {
-  flex: 1,
-  height: 50,
-  marginHorizontal: 15,
-  backgroundColor: '#497147ff',
-  color: 'white',
-  textAlign: 'center',
-  lineHeight: 50,
-  borderRadius: 5,
-  fontWeight: 'bold',
-  marginBottom: 30
-};

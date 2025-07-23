@@ -10,8 +10,18 @@ export default function Index() {
   const [btc, setBTC] = useState(0);
   const [bitcoinPrice, setBitcoinPrice] = useState(87414.5);
   const [openTab, setOpenTab] = useState("");
-  const [googleValue, setGoogleValue] = useState(191)
+  const [googleValue, setGoogleValue] = useState(70)
   const [googleHeld, setGoogleHeld] = useState(0)
+  const [teslaValue, setTeslaValue] = useState(50)
+  const [teslaHeld, setTeslaHeld] = useState(0)
+  const [bhValue, setBhValue] = useState(40)
+  const [bhHeld, setBhHeld] = useState(0)
+  const [appleValue, setAppleValue] = useState(90)
+  const [appleHeld, setAppleHeld] = useState(0)
+  const [amazonValue, setAmazonValue] = useState(60)
+  const [amazonHeld, setAmazonHeld] = useState(0)
+
+
   useEffect(() => {
     const interval = setInterval(() => {
       const change = (Math.random() - 0.5) * 2;
@@ -95,8 +105,32 @@ export default function Index() {
               }}>Stocks</Text>
             </Pressable>
 
-       {openTab === "commodities" && <Stocks googleHeld={googleHeld} setGoogleHeld={setGoogleHeld} googleValue={googleValue} setGoogleValue={setGoogleValue} cash={cash} setCash={setCash} />}
-  
+        {openTab === "commodities" && (
+          <Stocks
+            googleHeld={googleHeld}
+            setGoogleHeld={setGoogleHeld}
+            googleValue={googleValue}
+            setGoogleValue={setGoogleValue}
+            cash={cash}
+            setCash={setCash}
+            teslaValue={teslaValue}
+            setTeslaValue={setTeslaValue}
+            teslaHeld={teslaHeld}
+            setTeslaHeld={setTeslaHeld}
+            bhValue={bhValue}
+            setBhValue={setBhValue}
+            bhHeld={bhHeld}
+            setBhHeld={setBhHeld}
+            appleValue={appleValue}
+            setAppleValue={setAppleValue}
+            appleHeld={appleHeld}
+            setAppleHeld={setAppleHeld}
+            amazonValue={amazonValue}
+            setAmazonValue={setAmazonValue}
+            amazonHeld={amazonHeld}
+            setAmazonHeld={setAmazonHeld}
+          />
+        )}
 
 
         <Pressable onPress={() => toggleTab("holdings")}>
@@ -113,7 +147,20 @@ export default function Index() {
               }}>Holdings</Text>
             </Pressable>
 
-            {openTab === "holdings" && <Holdings  googleHeld={googleHeld} setGoogleHeld={setGoogleHeld} />}
+            {openTab === "holdings" && (
+              <Holdings
+                googleHeld={googleHeld}
+                setGoogleHeld={setGoogleHeld}
+                teslaHeld={teslaHeld}
+                setTeslaHeld={setTeslaHeld}
+                bhHeld={bhHeld}
+                setBhHeld={setBhHeld}
+                appleHeld={appleHeld}
+                setAppleHeld={setAppleHeld}
+                amazonHeld={amazonHeld}
+                setAmazonHeld={setAmazonHeld}
+              />
+            )}
 
             {/* Upgrades Button */}
             <Pressable onPress={() => toggleTab("upgrades")}>

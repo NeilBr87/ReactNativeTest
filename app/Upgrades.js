@@ -1,5 +1,21 @@
 import { Pressable, Text, View } from "react-native";
-export default function Upgrades() {
+export default function Upgrades(props) {
+
+    function buyUpgrade1() {
+        if (props.cash > 1000) {
+            props.setUpgrade1Purchased(true)
+            props.setMineRate(props.mineRate * 5)
+            props.setCash(props.cash - 1000)
+        };
+    }
+
+    function buyUpgrade2() {
+        if (props.cash > 5000) {
+            props.setUpgrade2Purchased(true)
+            props.setMineRate(props.mineRate * 5)
+            props.setCash(props.cash - 5000)
+        };
+    }
 
     return (
         <View style={{ marginTop: 20 }}>
@@ -36,12 +52,64 @@ export default function Upgrades() {
 
       {/* Buy Buttons */}
       <View style={{ alignItems: 'center', marginHorizontal: 10 }}>
-        <Pressable onPress={() => console.log('Buy Google')}>
-          <Text style={{ width: 50, height: 50, marginBottom: 10, backgroundColor: '#497147ff', color: 'white', textAlign: 'center', lineHeight: 50, borderRadius: 5}}>£1K</Text>
-        </Pressable>
-        <Pressable onPress={() => console.log('Buy Tesla')}>
-          <Text style={{ width: 50, height: 50, marginBottom: 10, backgroundColor: '#497147ff', color: 'white', textAlign: 'center', lineHeight: 50, borderRadius: 5}}>£5K</Text>
-        </Pressable>
+                    {!props.upgrade1purchased ? (
+            <Pressable onPress={buyUpgrade1}>
+                <Text style={{
+                width: 50,
+                height: 50,
+                marginBottom: 10,
+                backgroundColor: '#497147ff',
+                color: 'white',
+                textAlign: 'center',
+                lineHeight: 50,
+                borderRadius: 5
+                }}>
+                £1K
+                </Text>
+            </Pressable>
+            ) : <Pressable onPress={buyUpgrade1}>
+                <Text style={{
+                width: 50,
+                height: 50,
+                marginBottom: 10,
+                backgroundColor: '#a32927ff',
+                color: 'white',
+                textAlign: 'center',
+                lineHeight: 50,
+                borderRadius: 5
+                }}>
+                Active
+                </Text>
+            </Pressable>}
+         {!props.upgrade2purchased ? (
+            <Pressable onPress={buyUpgrade2}>
+                <Text style={{
+                width: 50,
+                height: 50,
+                marginBottom: 10,
+                backgroundColor: '#497147ff',
+                color: 'white',
+                textAlign: 'center',
+                lineHeight: 50,
+                borderRadius: 5
+                }}>
+                £5K
+                </Text>
+            </Pressable>
+            ) : <Pressable onPress={buyUpgrade1}>
+                <Text style={{
+                width: 50,
+                height: 50,
+                marginBottom: 10,
+                backgroundColor: '#a32927ff',
+                color: 'white',
+                textAlign: 'center',
+                lineHeight: 50,
+                borderRadius: 5
+                }}>
+                Active
+                </Text>
+            </Pressable>}
         <Pressable onPress={() => console.log('Buy Netflix')}>
           <Text style={{ width: 50, height: 50, marginBottom: 10, backgroundColor: '#497147ff', color: 'white', textAlign: 'center', lineHeight: 50, borderRadius: 5}}>£10K</Text>
         </Pressable>

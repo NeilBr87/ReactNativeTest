@@ -6,7 +6,7 @@ import Mining from './Mining';
 import Stocks from './Stocks';
 import Upgrades from './Upgrades';
 export default function Index() {
-  const [cash, setCash] = useState(0);
+  const [cash, setCash] = useState(7000);
   const [btc, setBTC] = useState(0);
   const [bitcoinPrice, setBitcoinPrice] = useState(87414.5);
   const [openTab, setOpenTab] = useState("");
@@ -20,6 +20,12 @@ export default function Index() {
   const [appleHeld, setAppleHeld] = useState(0)
   const [amazonValue, setAmazonValue] = useState(60)
   const [amazonHeld, setAmazonHeld] = useState(0)
+  const [mineRate, setMineRate] = useState(0.000011)
+  const [upgrade1purchased, setUpgrade1Purchased] = useState(false);
+  const [upgrade2purchased, setUpgrade2Purchased] = useState(false);
+  const [upgrade3purchased, setUpgrade3Purchased] = useState(false);
+  const [upgrade4purchased, setUpgrade4Purchased] = useState(false);
+  const [upgrade5purchased, setUpgrade5Purchased] = useState(false);
 
 useEffect(() => {
   const interval = setInterval(() => {
@@ -100,7 +106,7 @@ useEffect(() => {
 
             {/* Crypto Tab */}
             {openTab === "crypto" && (
-              <Mining btc={btc} setBTC={setBTC} bitcoinPrice={bitcoinPrice} setBitcoinPrice={setBitcoinPrice} cash={cash} setCash={setCash} />
+              <Mining mineRate={mineRate} setMineRate={setMineRate} btc={btc} setBTC={setBTC} bitcoinPrice={bitcoinPrice} setBitcoinPrice={setBitcoinPrice} cash={cash} setCash={setCash} />
             )}
 
             {/* Stocks Button */}
@@ -190,7 +196,16 @@ useEffect(() => {
               }}>Upgrades</Text>
             </Pressable>
 
-            {openTab === "upgrades" && <Upgrades />}
+            {openTab === "upgrades" && <Upgrades   upgrade1purchased={upgrade1purchased}
+  setUpgrade1Purchased={setUpgrade1Purchased}
+  upgrade2purchased={upgrade2purchased}
+  setUpgrade2Purchased={setUpgrade2Purchased}
+  upgrade3purchased={upgrade3purchased}
+  setUpgrade3Purchased={setUpgrade3Purchased}
+  upgrade4purchased={upgrade4purchased}
+  setUpgrade4Purchased={setUpgrade4Purchased}
+  upgrade5purchased={upgrade5purchased}
+  setUpgrade5Purchased={setUpgrade5Purchased} mineRate={mineRate} setMineRate={setMineRate} cash={cash} setCash={setCash} />}
           </View>
         </ScrollView>
       </SafeAreaView>

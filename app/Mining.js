@@ -10,7 +10,7 @@ export default function Mining(props) {
   };
 
   const earnBTC = () => {
-    props.setBTC(prev => prev + 0.000011);
+    props.setBTC(prev => prev + props.mineRate);
   };
 
 

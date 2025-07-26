@@ -9,3 +9,4 @@ Todos:
 Issues:
 
 1. When you buy stocks at £0 your cash is NaN
+2. Upgrades dont decrease cash

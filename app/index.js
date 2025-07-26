@@ -3,10 +3,11 @@ import { Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import Holdings from './Holdings';
 import Mining from './Mining';
+import News from './News';
 import Stocks from './Stocks';
 import Upgrades from './Upgrades';
 export default function Index() {
-  const [cash, setCash] = useState(7000);
+  const [cash, setCash] = useState(1000);
   const [btc, setBTC] = useState(0);
   const [bitcoinPrice, setBitcoinPrice] = useState(87414.5);
   const [openTab, setOpenTab] = useState("");
@@ -25,7 +26,18 @@ export default function Index() {
   const [upgrade2purchased, setUpgrade2Purchased] = useState(false);
   const [upgrade3purchased, setUpgrade3Purchased] = useState(false);
   const [upgrade4purchased, setUpgrade4Purchased] = useState(false);
-  const [upgrade5purchased, setUpgrade5Purchased] = useState(false);
+
+
+
+useEffect(() => {
+  if (!upgrade3purchased) return;
+
+  const interval = setInterval(() => {
+    setBTC(prev => prev + mineRate);
+  }, 3000);
+
+  return () => clearInterval(interval);
+}, [upgrade3purchased, mineRate]);
 
 useEffect(() => {
   const interval = setInterval(() => {
@@ -81,7 +93,7 @@ useEffect(() => {
               fontSize: 24,
               fontWeight: "bold",
               backgroundColor: "white",
-              width: 100,
+              width: 200,
               textAlign: 'center',
               paddingVertical: 10,
               borderRadius: 5
@@ -89,6 +101,47 @@ useEffect(() => {
               £{Math.floor(cash * 100) / 100}
             </Text>
 
+            <Pressable onPress={() => toggleTab("news")}>
+              <Text style={{
+                marginTop: 20,
+                fontSize: 24,
+                fontWeight: "bold",
+                backgroundColor: "#004777",
+                color: 'white',
+                width: 300,
+                textAlign: 'center',
+                paddingVertical: 20,
+                borderRadius: 5
+              }}>News</Text>
+            </Pressable>
+
+
+            {openTab === "news" && (
+          <News
+            googleHeld={googleHeld}
+            setGoogleHeld={setGoogleHeld}
+            googleValue={googleValue}
+            setGoogleValue={setGoogleValue}
+            cash={cash}
+            setCash={setCash}
+            teslaValue={teslaValue}
+            setTeslaValue={setTeslaValue}
+            teslaHeld={teslaHeld}
+            setTeslaHeld={setTeslaHeld}
+            bhValue={bhValue}
+            setBhValue={setBhValue}
+            bhHeld={bhHeld}
+            setBhHeld={setBhHeld}
+            appleValue={appleValue}
+            setAppleValue={setAppleValue}
+            appleHeld={appleHeld}
+            setAppleHeld={setAppleHeld}
+            amazonValue={amazonValue}
+            setAmazonValue={setAmazonValue}
+            amazonHeld={amazonHeld}
+            setAmazonHeld={setAmazonHeld}
+          />
+        )}
             {/* Crypto Button */}
             <Pressable onPress={() => toggleTab("crypto")}>
               <Text style={{
@@ -197,15 +250,16 @@ useEffect(() => {
             </Pressable>
 
             {openTab === "upgrades" && <Upgrades   upgrade1purchased={upgrade1purchased}
-  setUpgrade1Purchased={setUpgrade1Purchased}
-  upgrade2purchased={upgrade2purchased}
-  setUpgrade2Purchased={setUpgrade2Purchased}
-  upgrade3purchased={upgrade3purchased}
-  setUpgrade3Purchased={setUpgrade3Purchased}
-  upgrade4purchased={upgrade4purchased}
-  setUpgrade4Purchased={setUpgrade4Purchased}
-  upgrade5purchased={upgrade5purchased}
-  setUpgrade5Purchased={setUpgrade5Purchased} mineRate={mineRate} setMineRate={setMineRate} cash={cash} setCash={setCash} />}
+              setUpgrade1Purchased={setUpgrade1Purchased}
+              upgrade2purchased={upgrade2purchased}
+              setUpgrade2Purchased={setUpgrade2Purchased}
+              upgrade3purchased={upgrade3purchased}
+              setUpgrade3Purchased={setUpgrade3Purchased}
+              upgrade4purchased={upgrade4purchased}
+              setUpgrade4Purchased={setUpgrade4Purchased}
+              mineRate={mineRate} setMineRate={setMineRate} 
+              cash={cash} setCash={setCash} />
+            }
           </View>
         </ScrollView>
       </SafeAreaView>
